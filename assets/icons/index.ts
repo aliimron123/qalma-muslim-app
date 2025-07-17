@@ -1,0 +1,11 @@
+export { default as AlarmIcon } from './AlarmIcon';
+export { default as BookmarkIcon } from './BookmarkIcon';
+export { default as ChatIcon } from './ChatIcon';
+export { default as HomeIcon } from './HomeIcon';
+export { default as LocationIcon } from './LocationIcon';
+export { default as MoonCloudIcon } from './MoonCloud';
+export { default as PrayIcon } from './PrayIcon';
+export { default as QuranIcon } from './QuranIcon';
+export { default as SearchIcon } from './SearchIcon';
+export { default as ShareIcon } from './ShareIcon';
+export { default as TasbihIcon } from './TasbihIcon';
