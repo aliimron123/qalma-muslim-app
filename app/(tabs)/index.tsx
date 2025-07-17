@@ -80,7 +80,7 @@ export default function HomeScreen() {
 
 							<View style={styles.centerTime}>
 								<Text style={styles.time}>12:30</Text>
-								<Text style={styles.hijri}>04 Rajab 1446 H</Text>
+								<Text style={styles.hijri}>04 Muharram 1446 H</Text>
 								<Text style={styles.quote}>
 									Call upon Me, I will respond to you.
 								</Text>
