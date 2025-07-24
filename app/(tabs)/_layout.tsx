@@ -51,6 +51,7 @@ export default function TabLayout() {
 				options={{
 					title: 'Do`a',
 					tabBarIcon: ({ color }) => <PrayIcon color={color} />,
+					headerShown: true,
 				}}
 			/>
 			<Tabs.Screen
@@ -58,6 +59,7 @@ export default function TabLayout() {
 				options={{
 					title: 'Bookmark',
 					tabBarIcon: ({ color }) => <BookmarkIcon color={color} />,
+					headerShown: true,
 				}}
 			/>
 		</Tabs>
