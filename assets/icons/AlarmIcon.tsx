@@ -20,7 +20,7 @@ function AlarmIcon({
 		<Svg
 			width={sizes || width}
 			height={sizes || height}
-			viewBox='0 0 25 24'
+			viewBox='0 0 30 30'
 			color={color}
 			fill='none'
 			style={style}

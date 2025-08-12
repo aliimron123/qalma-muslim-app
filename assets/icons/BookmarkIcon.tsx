@@ -4,6 +4,7 @@ import Svg, { Path } from 'react-native-svg';
 interface IProps {
 	height?: string | number | undefined;
 	width?: string | number | undefined;
+	sizes?: string | number | undefined;
 	color?: string;
 	style?: any;
 	className?: string;
@@ -13,12 +14,13 @@ function BookmarkIcon({
 	width = 24,
 	color,
 	style,
+	sizes,
 	className,
 }: IProps) {
 	return (
 		<Svg
-			width={height}
-			height={width}
+			width={height || sizes}
+			height={width || sizes}
 			color={color}
 			style={style}
 			className={className}

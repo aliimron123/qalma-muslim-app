@@ -25,7 +25,7 @@ const SurahCard = ({
 			style={{ borderRadius: 12 }}
 			onPress={() =>
 				router.navigate({
-					pathname: '/quran/[id]',
+					pathname: '/read-quran/[id]',
 					params: { id: '1' },
 				})
 			}>
@@ -61,7 +61,9 @@ const SurahCard = ({
 
 				{/* Arabic */}
 				<View style={styles.arabicContainer}>
-					<Text className='text-xl text-black font-semibold text-right'>
+					<Text
+						className=' text-black font-semibold text-right'
+						style={{ fontFamily: 'Amiri', fontSize: 24 }}>
 						{surah_arabic}
 					</Text>
 				</View>

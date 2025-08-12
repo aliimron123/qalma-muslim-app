@@ -1,15 +1,18 @@
-import { LocationIcon, SearchIcon } from '@/assets/icons';
+import { LocationIcon } from '@/assets/icons';
 import LastRead from '@/components/feature/home/LastRead';
-import Menu from '@/components/feature/home/Menu';
 import OneDayDoa from '@/components/feature/home/OneDayDoa';
 import OneDayHadis from '@/components/feature/home/OneDayHadist';
 import PrayerSchedule from '@/components/feature/home/PrayerSchedule';
-import QuotesOfTheDay from '@/components/feature/home/QuotesOfTheDay';
-import { Badge, ButtonIcon } from '@/components/module';
+import { Badge } from '@/components/module';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { scaleFont } from '@/hooks/useScaleFont';
+import { GetRandomDoa } from '@/services/api/get-doa.query';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import React, { useCallback, useEffect, useState } from 'react';
+
 import {
+	RefreshControl,
 	SafeAreaView,
 	ScrollView,
 	StyleSheet,
@@ -18,20 +21,46 @@ import {
 	View,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RFValue } from 'react-native-responsive-fontsize';
-
 export default function HomeScreen() {
 	const { height: screenHeight } = useWindowDimensions();
 	const headerHeight = screenHeight * 0.45;
 
-	const components = [Menu, QuotesOfTheDay, LastRead, OneDayHadis, OneDayDoa];
+	const {
+		data: doaData,
+		isFetching: isFetchingDoa,
+		refetch: refetchDoa,
+	} = GetRandomDoa();
+
+	const DataDoa = doaData?.data;
+
+	const [refreshing, setRefreshing] = useState(false);
+
+	useEffect(() => {
+		refetchDoa(); // fetch on mount
+	}, []);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+
+		// Simulate data fetching
+		setTimeout(() => {
+			// Here you could re-fetch data, e.g., call your API again
+			setRefreshing(false);
+		}, 1500);
+	}, []);
 
 	return (
 		<GestureHandlerRootView style={styles.container}>
 			<SafeAreaView style={[styles.container]}>
 				<ScrollView
 					contentContainerStyle={{ paddingBottom: 32 }}
-					showsVerticalScrollIndicator={false}>
+					showsVerticalScrollIndicator={false}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+						/>
+					}>
 					{/* Hero Section */}
 					<View style={{ height: headerHeight }}>
 						<ParallaxScrollView
@@ -65,17 +94,6 @@ export default function HomeScreen() {
 									icon={<LocationIcon color='#fff' />}>
 									Kebayoran Lama, Jakarta Selatan
 								</Badge>
-								<ButtonIcon
-									variant='none'
-									size={40}
-									icon={
-										<SearchIcon
-											color='#fff'
-											width={40}
-											height={40}
-										/>
-									}
-								/>
 							</View>
 
 							<View style={styles.centerTime}>
@@ -94,16 +112,18 @@ export default function HomeScreen() {
 
 					{/* Content Below */}
 					<View style={styles.panelContent}>
-						{components.map((Component, index) => (
-							<Component key={index} />
-						))}
+						<LastRead />
+						<OneDayHadis />
+						<OneDayDoa
+							data={DataDoa}
+							isLoading={isFetchingDoa}
+						/>
 					</View>
 				</ScrollView>
 			</SafeAreaView>
 		</GestureHandlerRootView>
 	);
 }
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -143,19 +163,19 @@ const styles = StyleSheet.create({
 		flexShrink: 1,
 	},
 	time: {
-		fontSize: RFValue(32),
+		fontSize: scaleFont(32),
 		fontWeight: 'bold',
 		textAlign: 'center',
 		color: '#fff',
 	},
 	hijri: {
-		fontSize: RFValue(14),
+		fontSize: scaleFont(14),
 		fontWeight: '500',
 		textAlign: 'center',
 		color: '#fff',
 	},
 	quote: {
-		fontSize: RFValue(12),
+		fontSize: scaleFont(12),
 		fontWeight: '400',
 		textAlign: 'center',
 		color: '#94A3B8',

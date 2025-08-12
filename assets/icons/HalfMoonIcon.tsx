@@ -30,6 +30,9 @@ function HalfMoonIcon({
 		<Svg
 			width={height}
 			height={width}
+			style={style}
+			className={className}
+			color={color}
 			viewBox='0 0 30 26'
 			fill='none'>
 			<G filter='url(#filter0_d_638_122)'>

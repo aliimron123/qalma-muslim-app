@@ -8,6 +8,8 @@ module.exports = defineConfig([
 		ignores: ['dist/*'],
 		rules: {
 			'no-unused-vars': 'off',
+			'react/display-name': 'off',
+			'react-hooks/exhaustive-deps': 'off',
 		},
 	},
 ]);

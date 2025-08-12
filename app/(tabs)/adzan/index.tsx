@@ -1,12 +1,11 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-function Ayat() {
+function index() {
 	return (
 		<View>
-			<Text>test</Text>
+			<Text>Adzan</Text>
 		</View>
 	);
 }
-
-export default Ayat;
+export default index;

@@ -1,43 +1,44 @@
 {
-	"expo": {
-		"android": {
-			"adaptiveIcon": {
-				"backgroundColor": "#E5E7EB",
-				"foregroundImage": "./assets/images/adaptive-icon.png"
-			},
-			"edgeToEdgeEnabled": true
-		},
-		"experiments": {
-			"typedRoutes": true
-		},
-		"icon": "./assets/images/icon.png",
-		"ios": {
-			"supportsTablet": true
-		},
-		"name": "al-quran-v2",
-		"newArchEnabled": true,
-		"orientation": "portrait",
-		"plugins": [
-			"expo-router",
-			[
-				"expo-splash-screen",
-				{
-					"backgroundColor": "#ffffff",
-					"image": "./assets/images/SplashImage.png",
-					"imageWidth": 200,
-					"resizeMode": "contain"
-				}
-			],
-			"expo-sqlite"
-		],
-		"scheme": "alquranv2",
-		"slug": "",
-		"userInterfaceStyle": "light",
-		"version": "1.0.0",
-		"web": {
-			"bundler": "metro",
-			"favicon": "./assets/images/favicon.png",
-			"output": "static"
-		}
-	}
+  "expo": {
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E5E7EB",
+        "foregroundImage": "./assets/images/adaptive-icon.png"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "supportsTablet": true
+    },
+    "name": "al-quran-v2",
+    "newArchEnabled": true,
+    "orientation": "portrait",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/images/SplashImage.png",
+          "imageWidth": 200,
+          "resizeMode": "contain"
+        }
+      ],
+      "expo-sqlite",
+      "expo-audio"
+    ],
+    "scheme": "alquranv2",
+    "slug": "Qalma",
+    "userInterfaceStyle": "light",
+    "version": "1.0.0",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png",
+      "output": "static"
+    }
+  }
 }
