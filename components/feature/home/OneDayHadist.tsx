@@ -1,24 +1,29 @@
 import { ShareIcon } from '@/assets/icons';
 import { ButtonIcon, Card, Skeleton } from '@/components/module';
-import { GetRandomHadithArbain } from '@/services/api/get-hadist.query';
-import { useNavigation } from '@react-navigation/native';
+import { HadithData } from '@/types/hadist.types';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function OneDayHadist() {
-	const { data: dataHadith, isFetching } = GetRandomHadithArbain({
-		options: { queryKey: ['onedayhadist'], enabled: false },
-	});
+interface Props {
+	data: HadithData | undefined;
+	isLoading: boolean;
+	isError?: boolean;
+	error?: string;
+}
 
-	const data = dataHadith?.data;
+export default function OneDayHadist({
+	data,
+	isLoading,
+	isError,
+	error,
+}: Props) {
 	const [expanded, setExpanded] = useState(false);
-	const navigation = useNavigation();
+	// const navigation = useNavigation();
 
 	const handleViewMore = () => {
 		setExpanded(true);
-		// Navigasi ke halaman detail
-		console.log(data?.no);
+		5;
 	};
 
 	return (
@@ -32,7 +37,7 @@ export default function OneDayHadist() {
 				/>
 			</View>
 
-			{isFetching ? (
+			{isLoading ? (
 				<Skeleton height={120} />
 			) : (
 				<>
@@ -109,7 +114,10 @@ const styles = StyleSheet.create({
 		fontFamily: 'Inter',
 		fontWeight: '400',
 		lineHeight: 24,
-		textAlign: 'left',
+		textAlign: 'justify',
+		textRendering: 'optimizeLegibility',
+		flexWrap: 'wrap',
+		textIndent: '90px',
 	},
 	viewMoreBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent white

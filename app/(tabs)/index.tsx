@@ -7,10 +7,10 @@ import { Badge } from '@/components/module';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { scaleFont } from '@/hooks/useScaleFont';
 import { GetRandomDoa } from '@/services/api/get-doa.query';
+import { GetRandomHadithArbain } from '@/services/api/get-hadist.query';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useState } from 'react';
-
 import {
 	RefreshControl,
 	SafeAreaView,
@@ -31,12 +31,19 @@ export default function HomeScreen() {
 		refetch: refetchDoa,
 	} = GetRandomDoa();
 
+	const {
+		data: dataHadith,
+		isFetching: isFetchingHadits,
+		refetch: refetchHadits,
+	} = GetRandomHadithArbain();
+
 	const DataDoa = doaData?.data;
 
 	const [refreshing, setRefreshing] = useState(false);
 
 	useEffect(() => {
-		refetchDoa(); // fetch on mount
+		refetchDoa();
+		refetchHadits();
 	}, []);
 
 	const onRefresh = useCallback(() => {
@@ -113,7 +120,10 @@ export default function HomeScreen() {
 					{/* Content Below */}
 					<View style={styles.panelContent}>
 						<LastRead />
-						<OneDayHadis />
+						<OneDayHadis
+							data={dataHadith?.data}
+							isLoading={isFetchingHadits}
+						/>
 						<OneDayDoa
 							data={DataDoa}
 							isLoading={isFetchingDoa}
@@ -188,7 +198,7 @@ const styles = StyleSheet.create({
 	},
 	panelContent: {
 		backgroundColor: '#fff',
-		paddingHorizontal: 16,
+		paddingHorizontal: 12,
 		paddingVertical: 20,
 		height: '100%',
 		gap: 16,

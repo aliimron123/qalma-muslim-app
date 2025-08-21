@@ -1,64 +1,130 @@
-import { DummyData, DummyJuz } from '@/constants/data';
 import * as React from 'react';
 import {
 	Dimensions,
+	FlatList,
 	Platform,
-	ScrollView,
 	StyleSheet,
 	Text,
 	View,
 } from 'react-native';
 
+import { Skeleton } from '@/components/module';
+import { GetSurahListNew } from '@/services/api/get-surah.query';
+import { SurahDataV2 } from '@/types/surah.types';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import JuzCard from './JuzCard';
 import SurahCard from './SurahCard';
 
+// declare Props
+type RenderSurahCardProps = {
+	item: SurahDataV2;
+};
+
 // Ganti dengan konten asli kamu
-const SuratRoute = () => (
-	<ScrollView>
-		<View style={{ paddingVertical: 8 }}>
-			{DummyData.map((val) => (
-				<View
-					key={val.no}
-					style={styles.cardContainer}>
-					<SurahCard
-						no={val.no}
-						arti={val.arti}
-						surah_arabic={val.surah_arabic}
-						surah_idn={val.surah_idn}
-						total_ayah={val.total_ayah}
-						revealed_in={val.revealed_in}
-					/>
-				</View>
-			))}
-		</View>
-	</ScrollView>
-);
+const SuratRoute = () => {
+	const { data: dataSurah, isLoading, isError, error } = GetSurahListNew();
 
-const JuzRoute = () => (
-	<ScrollView>
-		<View style={{ paddingVertical: 8 }}>
-			{DummyJuz.map((val) => (
-				<View
-					key={val.number}
-					style={styles.cardContainer}>
-					<JuzCard
-						name={val.name}
-						name_start_arab={val.name_start_arab}
-						name_start_id={val.name_start_id}
-						verse_start={val.verse_start}
+	if (isLoading) {
+		return (
+			<View
+				style={[styles.cardContainer, { flex: 1, marginVertical: 10, gap: 8 }]}>
+				{Array.from({ length: 8 }).map((_, index) => (
+					<Skeleton
+						key={index}
+						height={100}
 					/>
-				</View>
-			))}
-		</View>
-	</ScrollView>
-);
+				))}
+			</View>
+		);
+	}
 
-const AyatRoute = () => (
-	<View style={styles.scene}>
-		<Text style={styles.text}>Konten Ayat</Text>
-	</View>
-);
+	if (isError) {
+		return <Text>Error: {error.message}</Text>;
+	}
+
+	const RenderSurahCard = React.memo(({ item }: RenderSurahCardProps) => (
+		<SurahCard
+			no={item.nomor}
+			surah_idn={item.namaLatin}
+			surah_arabic={item.nama}
+			arti={item.arti}
+			total_ayah={String(item.jumlahAyat)}
+			revealed_in={item.tempatTurun}
+		/>
+	));
+
+	return (
+		<View>
+			<FlatList
+				data={dataSurah}
+				keyExtractor={(item) => String(item.nomor)}
+				renderItem={({ item }) => <RenderSurahCard item={item} />}
+				ItemSeparatorComponent={() => (
+					<View
+						style={{
+							height: 1,
+							marginVertical: 3,
+						}}
+					/>
+				)}
+				contentContainerStyle={{ paddingVertical: 10, paddingHorizontal: 8 }}
+				showsVerticalScrollIndicator={false}
+			/>
+		</View>
+	);
+};
+
+const TafsirRoute = () => {
+	const { data: dataSurah, isLoading, isError, error } = GetSurahListNew();
+
+	if (isLoading) {
+		return (
+			<View
+				style={[styles.cardContainer, { flex: 1, marginVertical: 10, gap: 8 }]}>
+				{Array.from({ length: 8 }).map((_, index) => (
+					<Skeleton
+						key={index}
+						height={100}
+					/>
+				))}
+			</View>
+		);
+	}
+
+	if (isError) {
+		return <Text>Error: {error.message}</Text>;
+	}
+
+	const RenderSurahCard = React.memo(({ item }: RenderSurahCardProps) => (
+		<SurahCard
+			no={item.nomor}
+			surah_idn={item.namaLatin}
+			surah_arabic={item.nama}
+			arti={item.arti}
+			total_ayah={String(item.jumlahAyat)}
+			revealed_in={item.tempatTurun}
+		/>
+	));
+
+	return (
+		<View>
+			<FlatList
+				data={dataSurah}
+				keyExtractor={(item) => String(item.nomor)}
+				renderItem={({ item }) => <RenderSurahCard item={item} />}
+				ItemSeparatorComponent={() => (
+					<View
+						style={{
+							height: 1,
+							marginVertical: 3,
+						}}
+					/>
+				)}
+				contentContainerStyle={{ paddingVertical: 10, paddingHorizontal: 8 }}
+				showsVerticalScrollIndicator={false}
+			/>
+		</View>
+	);
+};
 
 const TagRoute = () => (
 	<View style={styles.scene}>
@@ -70,15 +136,13 @@ export default function TabViewQuran() {
 	const [index, setIndex] = React.useState(0);
 	const [routes] = React.useState([
 		{ key: 'surat', title: 'Surat' },
-		{ key: 'juz', title: 'Juz' },
-		{ key: 'ayat', title: 'Ayat' },
+		{ key: 'tafsir', title: 'Tafsir' },
 		{ key: 'tag', title: 'Bookmark' },
 	]);
 
 	const renderScene = SceneMap({
 		surat: SuratRoute,
-		juz: JuzRoute,
-		ayat: AyatRoute,
+		tafsir: TafsirRoute,
 		tag: TagRoute,
 	});
 
@@ -138,5 +202,10 @@ const styles = StyleSheet.create({
 		color: '#0A0A1F',
 		fontFamily: 'PixelFont', // 👉 pastikan sudah load font-nya
 		fontSize: 24,
+	},
+	containerLoading: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 });

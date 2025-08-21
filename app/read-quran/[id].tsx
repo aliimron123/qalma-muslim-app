@@ -3,14 +3,17 @@ import AudioPlayer, {
 } from '@/components/feature/quran/AudioPlayer';
 import AyahCard from '@/components/feature/quran/AyatCard';
 import { Button, Modal } from '@/components/module';
-import { DummyAyah } from '@/constants/data';
 import { useModal } from '@/hooks/useModal';
+import { GetSurahDetail } from '@/services/api/get-surah.query';
+import { AyatData } from '@/types/surah.types';
 import Slider from '@react-native-community/slider';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useRef, useState } from 'react';
 import {
 	Animated,
 	Dimensions,
 	FlatList,
+	ListRenderItemInfo,
 	StyleSheet,
 	Text,
 	View,
@@ -23,6 +26,7 @@ const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
 function Ayat() {
 	const inset = useSafeAreaInsets();
 	const { isModalOpen, closeModal } = useModal();
+	const { id } = useLocalSearchParams();
 
 	// ✅ States
 	const [sizeText, setSizeText] = useState(0);
@@ -88,14 +92,18 @@ function Ayat() {
 		}, 50); // debounce delay
 	};
 	// ✅ Render each Ayah
+
+	const { data: dataSurahDetail } = GetSurahDetail(id as string);
+	const renderData = dataSurahDetail?.data.ayat ?? [];
+
 	const renderItem = useCallback(
-		({ item }: any) => (
+		({ item }: ListRenderItemInfo<AyatData>) => (
 			<AyahCard
-				no={item.no}
-				ayah={item.ayat}
-				latin={item.latin}
+				no={item.nomorAyat}
+				ayah={item.teksArab}
+				latin={item.teksLatin}
 				sizeText={sizeText}
-				arti_id={item.arti_id}
+				arti_id={item.teksIndonesia}
 				handleOpenAudio={() => handleOpenAudio(0)}
 			/>
 		),
@@ -106,8 +114,8 @@ function Ayat() {
 		<GestureHandlerRootView>
 			<View style={{ flex: 1 }}>
 				<FlatList
-					keyExtractor={(item) => String(item.no)}
-					data={DummyAyah}
+					keyExtractor={(item) => String(item.nomorAyat)}
+					data={renderData}
 					renderItem={renderItem}
 					onScroll={handleScroll}
 					scrollEventThrottle={16}
@@ -130,8 +138,8 @@ function Ayat() {
 							style={{ width: deviceWidth * 0.65, marginVertical: 'auto' }}
 							value={sizeText}
 							step={1}
-							minimumValue={24}
-							maximumValue={36}
+							minimumValue={28}
+							maximumValue={42}
 							onValueChange={setSizeText}
 							minimumTrackTintColor='#334372'
 							maximumTrackTintColor='#000000'
@@ -143,19 +151,19 @@ function Ayat() {
 							title='Kecil'
 							style={styles.buttonStyle}
 							textStyle={{ fontSize: 14 }}
-							onPress={() => setSizeText(24)}
+							onPress={() => setSizeText(28)}
 						/>
 						<Button
 							title='Normal'
 							style={styles.buttonStyle}
 							textStyle={{ fontSize: 14 }}
-							onPress={() => setSizeText(30)}
+							onPress={() => setSizeText(32)}
 						/>
 						<Button
 							title='Besar'
 							style={styles.buttonStyle}
 							textStyle={{ fontSize: 14 }}
-							onPress={() => setSizeText(36)}
+							onPress={() => setSizeText(42)}
 						/>
 					</View>
 				</Modal>

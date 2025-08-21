@@ -4,11 +4,9 @@ import { RandomHadithArbainResponses } from '@/types/hadist.types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 //  show or get data list of surah and juz
-export const GetRandomHadithArbain = ({
-	options,
-}: {
-	options?: UseQueryOptions<RandomHadithArbainResponses, ApiError>;
-}) => {
+export const GetRandomHadithArbain = (
+	options?: UseQueryOptions<RandomHadithArbainResponses, ApiError>,
+) => {
 	return useQuery<RandomHadithArbainResponses, ApiError>({
 		queryKey: ['random-hadist-arbain'],
 		queryFn: async () => {

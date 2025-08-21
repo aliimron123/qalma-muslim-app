@@ -1,7 +1,7 @@
 import { BookmarkIcon, PlayIcon, ShareIcon } from '@/assets/icons';
 import { ButtonIcon, Card } from '@/components/module';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 
 type AyahCardProps = {
 	no: number;
@@ -82,7 +82,10 @@ const AyahCard = ({
 				<View>
 					{/* Arabic */}
 					<View style={styles.arabicContainer}>
-						<Text style={[styles.arabicText, { fontSize: sizeText || 32 }]}>
+						<Text
+							style={[styles.arabicText, { fontSize: sizeText || 32 }]}
+							adjustsFontSizeToFit
+							numberOfLines={12}>
 							{ayah}
 						</Text>
 						{/* Number + Icon Frame */}
@@ -91,8 +94,10 @@ const AyahCard = ({
 
 				{/* Info (Judul & Detail) */}
 				<View style={styles.infoContainer}>
-					<Text className='text-lg font-bold text-blue-900'>{latin}</Text>
-					<Text className='text-blue-800  mt-1'>{arti_id}</Text>
+					<Text className='text-lg font-bold text-blue-900 felx-wrap'>
+						{latin}
+					</Text>
+					<Text className='text-blue-800  mt-1 flex-wrap'>{arti_id}</Text>
 				</View>
 			</View>
 		</Card>
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
 	},
 	infoContainer: {
 		flex: 1,
-		marginTop: 16,
+		marginTop: 8,
 		justifyContent: 'center',
 	},
 	numberText: {
@@ -144,10 +149,25 @@ const styles = StyleSheet.create({
 	},
 	arabicText: {
 		color: '#000',
-		fontWeight: '600', // font-semibold
+		paddingTop: 18,
 		textAlign: 'right',
-		maxWidth: 320, // kira-kira 'max-w-xs'
-		marginVertical: 'auto',
-		fontFamily: 'Amiri', // ✅ Custom Font
+		writingDirection: 'rtl',
+		includeFontPadding: false, // biar gak ada padding default
+		fontFamily: 'Amiri', // bagus untuk Al-Quran
+		lineHeight: 100,
+		letterSpacing: -3, // jangan terlalu lebar (2 sering bikin tanda baca kepisah jauh)
+		marginVertical: 4, // hindari pakai 'auto' (tidak didukung di RN)
+		unicodeBidi: 'embed',
+		textRendering: 'optimizeLegibility',
+		fontFeatureSettings: "'rlig' 1, 'liga' 1, 'calt' 1, 'mark' 1, 'mkmk' 1",
+		flexShrink: 1, // biar gak overflow
+		flexWrap: 'wrap',
+	},
+	fallbackText: {
+		fontFamily: Platform.select({
+			ios: 'Times New Roman',
+			android: 'serif',
+			default: 'serif',
+		}),
 	},
 });

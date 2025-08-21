@@ -6,14 +6,14 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { Image, StyleSheet, Text } from 'react-native';
 
 export default function Layout() {
-	const { id } = useLocalSearchParams();
+	const { name } = useLocalSearchParams();
 	const { openModal } = useModal();
 	return (
 		<Stack>
 			<Stack.Screen
 				name='[id]'
 				options={{
-					title: id ? `Surat ${id}` : 'Read Doa',
+					title: name ? `${name}` : '-',
 					headerTitle: (props) => (
 						<Text
 							style={{

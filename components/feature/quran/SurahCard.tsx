@@ -26,7 +26,7 @@ const SurahCard = ({
 			onPress={() =>
 				router.navigate({
 					pathname: '/read-quran/[id]',
-					params: { id: '1' },
+					params: { id: no, name: surah_idn },
 				})
 			}>
 			<View style={styles.container}>
@@ -63,7 +63,7 @@ const SurahCard = ({
 				<View style={styles.arabicContainer}>
 					<Text
 						className=' text-black font-semibold text-right'
-						style={{ fontFamily: 'Amiri', fontSize: 24 }}>
+						style={styles.arabicText}>
 						{surah_arabic}
 					</Text>
 				</View>
@@ -104,5 +104,18 @@ const styles = StyleSheet.create({
 	arabicContainer: {
 		justifyContent: 'center',
 		alignItems: 'flex-end',
+	},
+	arabicText: {
+		fontFamily: 'Amiri',
+		fontSize: 24,
+		writingDirection: 'rtl',
+		includeFontPadding: false, // biar gak ada padding default
+		letterSpacing: 1, // jangan terlalu lebar (2 sering bikin tanda baca kepisah jauh)
+		marginVertical: 4, // hindari pakai 'auto' (tidak didukung di RN)
+		unicodeBidi: 'embed',
+		textRendering: 'optimizeLegibility',
+		fontFeatureSettings: "'rlig' 1, 'liga' 1, 'calt' 1, 'mark' 1, 'mkmk' 1",
+		flexShrink: 1, // biar gak overflow
+		flexWrap: 'wrap',
 	},
 });

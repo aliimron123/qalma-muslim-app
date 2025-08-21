@@ -84,6 +84,15 @@ const styles = StyleSheet.create({
 		textAlign: 'right',
 		lineHeight: 52,
 		marginBottom: 12,
+		writingDirection: 'rtl',
+		includeFontPadding: false, // biar gak ada padding default
+		letterSpacing: 1, // jangan terlalu lebar (2 sering bikin tanda baca kepisah jauh)
+		marginVertical: 4, // hindari pakai 'auto' (tidak didukung di RN)
+		unicodeBidi: 'embed',
+		textRendering: 'optimizeLegibility',
+		fontFeatureSettings: "'rlig' 1, 'liga' 1, 'calt' 1, 'mark' 1, 'mkmk' 1",
+		flexShrink: 1, // biar gak overflow
+		flexWrap: 'wrap',
 	},
 	translationWrapper: {
 		marginTop: 8,

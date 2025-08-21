@@ -34,7 +34,7 @@ const JuzCard = ({
 			onPress={() =>
 				router.navigate({
 					pathname: '/read-quran/[id]',
-					params: { id: '1' },
+					params: { id: '1', name: name },
 				})
 			}>
 			<View style={styles.container}>
@@ -50,7 +50,7 @@ const JuzCard = ({
 				<View style={styles.arabicContainer}>
 					<Text
 						className='text-black text-right'
-						style={{ fontFamily: 'Amiri', fontSize: 24, fontWeight: '600' }}>
+						style={{ fontFamily: 'Arabic', fontSize: 24, fontWeight: '600' }}>
 						{name_start_arab}
 					</Text>
 				</View>

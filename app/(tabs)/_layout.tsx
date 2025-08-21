@@ -4,11 +4,19 @@ import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { initDb } from '@/services/db';
+import { resetSurahTable } from '@/services/db/surahDb';
+
 import { Tabs } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
+
+	useEffect(() => {
+		resetSurahTable();
+		initDb();
+	}, []);
 
 	return (
 		<Tabs
@@ -44,7 +52,7 @@ export default function TabLayout() {
 				options={{
 					title: 'Adzan',
 					tabBarIcon: ({ color }) => <Adzan color={color} />,
-					headerShown: true,
+					headerShown: false,
 				}}
 			/>
 

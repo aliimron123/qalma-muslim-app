@@ -7,13 +7,16 @@ import { useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
+
+import LottieView from 'lottie-react-native';
+
+const { width: deviceWidth } = Dimensions.get('window');
 
 function Doa() {
 	const { id } = useLocalSearchParams();
 	const [search, setSearch] = useState('');
 
-	const { data, isFetching, isError, error, refetch } = GetDoaByKeyword({
+	const { data, isFetching } = GetDoaByKeyword({
 		keyword: id as string,
 		options: { queryKey: ['doa-keyword', id], enabled: !!id },
 	});
@@ -65,7 +68,13 @@ function Doa() {
 						scrollEventThrottle={16}
 						ListEmptyComponent={
 							<View style={styles.emptyContainer}>
-								<Text style={styles.emptyText}>Tidak ada data</Text>
+								<LottieView
+									source={require('@/assets/animation/notFound.json')}
+									loop
+									autoPlay
+									style={{ width: 200, height: 200 }}
+								/>
+								<Text style={{ fontSize: 18 }}>Data Tidak Ditemukan</Text>
 							</View>
 						}
 						contentContainerStyle={
@@ -92,8 +101,8 @@ function Doa() {
 						style={{ width: deviceWidth * 0.65, marginVertical: 'auto' }}
 						value={sizeText}
 						step={1}
-						minimumValue={24}
-						maximumValue={36}
+						minimumValue={28}
+						maximumValue={48}
 						onValueChange={setSizeText}
 						minimumTrackTintColor='#334372'
 						maximumTrackTintColor='#000000'
@@ -105,19 +114,19 @@ function Doa() {
 						title='Kecil'
 						style={styles.buttonStyle}
 						textStyle={{ fontSize: 14 }}
-						onPress={() => setSizeText(24)}
+						onPress={() => setSizeText(28)}
 					/>
 					<Button
 						title='Normal'
 						style={styles.buttonStyle}
 						textStyle={{ fontSize: 14 }}
-						onPress={() => setSizeText(30)}
+						onPress={() => setSizeText(32)}
 					/>
 					<Button
 						title='Besar'
 						style={styles.buttonStyle}
 						textStyle={{ fontSize: 14 }}
-						onPress={() => setSizeText(36)}
+						onPress={() => setSizeText(42)}
 					/>
 				</View>
 			</Modal>
