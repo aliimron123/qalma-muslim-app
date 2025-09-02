@@ -22,8 +22,7 @@ export default function OneDayHadist({
 	// const navigation = useNavigation();
 
 	const handleViewMore = () => {
-		setExpanded(true);
-		5;
+		setExpanded((expanded) => !expanded);
 	};
 
 	return (
@@ -60,13 +59,15 @@ export default function OneDayHadist({
 									{data?.indo}
 								</Text>
 
-								{!expanded && (
-									<TouchableOpacity
-										onPress={handleViewMore}
-										style={styles.viewMoreBtn}>
+								<TouchableOpacity
+									onPress={handleViewMore}
+									style={styles.viewMoreBtn}>
+									{!expanded ? (
 										<Text style={styles.viewMoreText}>Selengkapnya...</Text>
-									</TouchableOpacity>
-								)}
+									) : (
+										<Text style={styles.viewMoreText}>Lebih Sedikit..</Text>
+									)}
+								</TouchableOpacity>
 							</View>
 						</Card>
 					</LinearGradient>
@@ -113,12 +114,11 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontFamily: 'Inter',
 		fontWeight: '400',
-		lineHeight: 24,
+		lineHeight: 20, // lebih rapat
 		textAlign: 'justify',
-		textRendering: 'optimizeLegibility',
-		flexWrap: 'wrap',
-		textIndent: '90px',
+		letterSpacing: 0.2, // opsional biar nggak dempet
 	},
+
 	viewMoreBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent white
 		paddingHorizontal: 16,

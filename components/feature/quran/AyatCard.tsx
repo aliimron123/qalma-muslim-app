@@ -94,10 +94,10 @@ const AyahCard = ({
 
 				{/* Info (Judul & Detail) */}
 				<View style={styles.infoContainer}>
-					<Text className='text-lg font-bold text-blue-900 felx-wrap'>
+					<Text className='text-lg font-bold text-blue-900 flex-wrap'>
 						{latin}
 					</Text>
-					<Text className='text-blue-800  mt-1 flex-wrap'>{arti_id}</Text>
+					<Text className='mt-4 text-lg flex-wrap leading-6'>{arti_id}</Text>
 				</View>
 			</View>
 		</Card>

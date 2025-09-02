@@ -72,9 +72,8 @@ const Badge: React.FC<BadgeProps> = ({
 
 	// based style
 	const baseStyle: ViewStyle = {
-		height: sizeStyle.height,
 		borderRadius: sizeStyle.borderRadius,
-		paddingHorizontal: sizeStyle.paddingHorizontal,
+		paddingHorizontal: sizeStyle.paddingHorizontal ?? 4,
 		justifyContent: 'center',
 		alignItems: 'center',
 		alignSelf: 'flex-start',
@@ -154,7 +153,7 @@ const Badge: React.FC<BadgeProps> = ({
 					style={StyleSheet.absoluteFill}
 				/>
 			) : null}
-			{content}
+			<Text numberOfLines={4}>{content}</Text>
 		</Wrapper>
 	);
 };
@@ -163,6 +162,7 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		paddingVertical: 2,
 	},
 	icon: {
 		alignItems: 'center',

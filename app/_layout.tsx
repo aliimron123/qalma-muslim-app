@@ -1,15 +1,17 @@
-import '@/global.css';
-import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
 import { ModalProvider } from '@/context/ModalContext';
+import '@/global.css';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { queryClient } from '@/scripts/api-services';
+import { initDb } from '@/services/db';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
+import { SplashScreen, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 export default function RootLayout() {
 	const colorScheme = useColorScheme();
 	const [loaded] = useFonts({
@@ -19,6 +21,16 @@ export default function RootLayout() {
 		Arabic: require('../assets/fonts/Arabic.ttf'),
 		Inter: require('../assets/fonts/Inter-VariableFont_opsz,wght.ttf'),
 	});
+
+	useEffect(() => {
+		initDb();
+	}, []);
+
+	useEffect(() => {
+		if (loaded) {
+			SplashScreen.hide();
+		}
+	}, [loaded]);
 
 	if (!loaded) {
 		// Async font loading only occurs in development.
@@ -49,11 +61,19 @@ export default function RootLayout() {
 								name='search/index'
 								options={{ animation: 'flip' }}
 							/>
+							<Stack.Screen
+								name='location/index'
+								options={{
+									animation: 'flip',
+									title: 'Pilih Lokasi',
+								}}
+							/>
 							<Stack.Screen name='+not-found' />
 						</Stack>
 						<StatusBar style='auto' />
 					</ModalProvider>
 				</SafeAreaProvider>
+				<Toast />
 			</ThemeProvider>
 		</QueryClientProvider>
 	);

@@ -4,19 +4,12 @@ import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { initDb } from '@/services/db';
-import { resetSurahTable } from '@/services/db/surahDb';
 
 import { Tabs } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
-
-	useEffect(() => {
-		resetSurahTable();
-		initDb();
-	}, []);
 
 	return (
 		<Tabs

@@ -42,7 +42,7 @@ export function useCurrentLocation() {
 				let addressString = '';
 				if (geocode.length > 0) {
 					const { city, region } = geocode[0];
-					addressString = [city, region].filter(Boolean).join(', ');
+					addressString = [city].filter(Boolean).join(', ');
 				}
 
 				if (isMounted) {

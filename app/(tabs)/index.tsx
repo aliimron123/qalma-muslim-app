@@ -5,11 +5,14 @@ import OneDayHadis from '@/components/feature/home/OneDayHadist';
 import PrayerSchedule from '@/components/feature/home/PrayerSchedule';
 import { Badge } from '@/components/module';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { useCurrentLocation } from '@/hooks/useCurrentLocation';
+import { useDateTime } from '@/hooks/useDateTime';
 import { scaleFont } from '@/hooks/useScaleFont';
 import { GetRandomDoa } from '@/services/api/get-doa.query';
 import { GetRandomHadithArbain } from '@/services/api/get-hadist.query';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
 	RefreshControl,
@@ -21,9 +24,12 @@ import {
 	View,
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 export default function HomeScreen() {
 	const { height: screenHeight } = useWindowDimensions();
 	const headerHeight = screenHeight * 0.45;
+	const { location, errorMsg } = useCurrentLocation();
+	const { time, date } = useDateTime();
 
 	const {
 		data: doaData,
@@ -45,6 +51,16 @@ export default function HomeScreen() {
 		refetchDoa();
 		refetchHadits();
 	}, []);
+
+	useEffect(() => {
+		if (errorMsg) {
+			Toast.show({
+				type: 'error',
+				text1: 'Location Error',
+				text2: errorMsg, // tampilkan pesan asli dari hook
+			});
+		}
+	}, [errorMsg]);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -96,16 +112,18 @@ export default function HomeScreen() {
 						<View style={[styles.heroOverlay, { height: headerHeight }]}>
 							<View style={styles.topRow}>
 								<Badge
-									style={{ marginVertical: 'auto' }}
 									variant='transparent'
+									onPress={() => {
+										router.push('/location');
+									}}
 									icon={<LocationIcon color='#fff' />}>
-									Kebayoran Lama, Jakarta Selatan
+									{location?.address}
 								</Badge>
 							</View>
 
 							<View style={styles.centerTime}>
-								<Text style={styles.time}>12:30</Text>
-								<Text style={styles.hijri}>04 Muharram 1446 H</Text>
+								<Text style={styles.time}>{time}</Text>
+								<Text style={styles.hijri}>{date}</Text>
 								<Text style={styles.quote}>
 									Call upon Me, I will respond to you.
 								</Text>
@@ -162,7 +180,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		paddingHorizontal: 16,
-		paddingTop: 20,
+		paddingTop: 18,
 	},
 	centerTime: {
 		alignItems: 'center',
@@ -173,19 +191,19 @@ const styles = StyleSheet.create({
 		flexShrink: 1,
 	},
 	time: {
-		fontSize: scaleFont(32),
+		fontSize: scaleFont(48),
 		fontWeight: 'bold',
 		textAlign: 'center',
 		color: '#fff',
 	},
 	hijri: {
-		fontSize: scaleFont(14),
+		fontSize: scaleFont(16),
 		fontWeight: '500',
 		textAlign: 'center',
 		color: '#fff',
 	},
 	quote: {
-		fontSize: scaleFont(12),
+		fontSize: scaleFont(14),
 		fontWeight: '400',
 		textAlign: 'center',
 		color: '#94A3B8',
