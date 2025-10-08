@@ -117,7 +117,7 @@ export default function HomeScreen() {
 										router.push('/location');
 									}}
 									icon={<LocationIcon color='#fff' />}>
-									{location?.address}
+									{location ? location.address : 'Lokasi Tidak Ditemukan'}
 								</Badge>
 							</View>
 

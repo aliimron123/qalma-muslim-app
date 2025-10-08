@@ -7,20 +7,56 @@ import {
 } from '@/assets/icons';
 import SunFog from '@/assets/icons/SunFog';
 import { Button, ButtonIcon } from '@/components/module';
+import { useLocationStorage } from '@/context/storageLocation';
+import { GetAdzanByDay } from '@/services/api/get-adzan-time.query';
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 function PrayerSchedule() {
+	const { location } = useLocationStorage();
 	const [isShow, setIsShow] = React.useState(false);
 
+	const currentLoc = JSON.parse(location || '{}');
+	const getCity = currentLoc.id;
+	const getDate = new Date().toISOString().split('T')[0];
+
+	// get data schedule from api
+	const { data, isFetching } = GetAdzanByDay({
+		date: getDate as string,
+		city: getCity as string,
+	});
+
+	const schedulePrayerData = data?.data;
+	const schedule = schedulePrayerData?.jadwal;
+
 	const dataPrayer = [
-		{ title: 'Imsak', time: '04:25', icon: <TimeIcon color='white' /> },
-		{ title: 'Subuh', time: '04:35', icon: <MoonCloudIcon color='white' /> },
-		{ title: 'Dzuhur', time: '12:05', icon: <SunLineIcon color='white' /> },
-		{ title: 'Ashar', time: '15:15', icon: <SunCloudIcon color='white' /> },
-		{ title: 'Maghrib', time: '18:05', icon: <SunFog color='white' /> },
-		{ title: 'Isya', time: '19:15', icon: <HalfMoonIcon color='white' /> },
+		{ title: 'Imsak', time: schedule?.imsak, icon: <TimeIcon color='white' /> },
+		{
+			title: 'Subuh',
+			time: schedule?.subuh,
+			icon: <MoonCloudIcon color='white' />,
+		},
+		{
+			title: 'Dzuhur',
+			time: schedule?.dzuhur,
+			icon: <SunLineIcon color='white' />,
+		},
+		{
+			title: 'Ashar',
+			time: schedule?.ashar,
+			icon: <SunCloudIcon color='white' />,
+		},
+		{
+			title: 'Maghrib',
+			time: schedule?.maghrib,
+			icon: <SunFog color='white' />,
+		},
+		{
+			title: 'Isya',
+			time: schedule?.isya,
+			icon: <HalfMoonIcon color='white' />,
+		},
 	];
 
 	if (isShow) {
@@ -42,21 +78,27 @@ function PrayerSchedule() {
 
 	return (
 		<View className='flex gap-5 flex-row items-center justify-center'>
-			{dataPrayer.map((val, index) => (
-				<View
-					key={index}
-					className='flex flex-col items-center text-center gap-1.5'>
-					<ButtonIcon
-						variant='none'
-						icon={val.icon}
-						style={{ marginVertical: 'auto' }}
-					/>
-					<Text className='text-white text-center'>{val.title}</Text>
-					<Text className='text-white font-semibold text-center'>
-						{val.time}
-					</Text>
-				</View>
-			))}
+			{isFetching ? (
+				<Text>Loading...</Text>
+			) : (
+				<React.Fragment>
+					{dataPrayer.map((val, index) => (
+						<View
+							key={index}
+							className='flex flex-col items-center text-center gap-1.5'>
+							<ButtonIcon
+								variant='none'
+								icon={val.icon}
+								style={{ marginVertical: 'auto' }}
+							/>
+							<Text className='text-white text-center'>{val.title}</Text>
+							<Text className='text-white font-semibold text-center'>
+								{val.time}
+							</Text>
+						</View>
+					))}
+				</React.Fragment>
+			)}
 		</View>
 	);
 }

@@ -1,4 +1,5 @@
 import { ModalProvider } from '@/context/ModalContext';
+import { StorageLocationProvider } from '@/context/storageLocation';
 import '@/global.css';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { queryClient } from '@/scripts/api-services';
@@ -42,36 +43,38 @@ export default function RootLayout() {
 			<ThemeProvider
 				value={colorScheme === 'light' ? DefaultTheme : DefaultTheme}>
 				<SafeAreaProvider>
-					<ModalProvider>
-						<Stack>
-							<Stack.Screen
-								name='(tabs)'
-								options={{ headerShown: false, animation: 'ios_from_left' }}
-							/>
-							<Stack.Screen
-								name='read-quran'
-								options={{ headerShown: false, animation: 'flip' }}
-							/>
-							<Stack.Screen
-								name='read-doa'
-								options={{ headerShown: false, animation: 'flip' }}
-							/>
+					<StorageLocationProvider>
+						<ModalProvider>
+							<Stack>
+								<Stack.Screen
+									name='(tabs)'
+									options={{ headerShown: false, animation: 'ios_from_left' }}
+								/>
+								<Stack.Screen
+									name='read-quran'
+									options={{ headerShown: false, animation: 'flip' }}
+								/>
+								<Stack.Screen
+									name='read-doa'
+									options={{ headerShown: false, animation: 'flip' }}
+								/>
 
-							<Stack.Screen
-								name='search/index'
-								options={{ animation: 'flip' }}
-							/>
-							<Stack.Screen
-								name='location/index'
-								options={{
-									animation: 'flip',
-									title: 'Pilih Lokasi',
-								}}
-							/>
-							<Stack.Screen name='+not-found' />
-						</Stack>
-						<StatusBar style='auto' />
-					</ModalProvider>
+								<Stack.Screen
+									name='search/index'
+									options={{ animation: 'flip' }}
+								/>
+								<Stack.Screen
+									name='location/index'
+									options={{
+										animation: 'flip',
+										title: 'Pilih Lokasi',
+									}}
+								/>
+								<Stack.Screen name='+not-found' />
+							</Stack>
+							<StatusBar style='auto' />
+						</ModalProvider>
+					</StorageLocationProvider>
 				</SafeAreaProvider>
 				<Toast />
 			</ThemeProvider>

@@ -1,63 +1,59 @@
 {
-	"expo": {
-		"android": {
-			"adaptiveIcon": {
-				"backgroundColor": "#E5E7EB",
-				"foregroundImage": "./assets/images/splash-image.png",
-				"resizeMode": "contain"
-			},
-			"edgeToEdgeEnabled": true,
-			"package": "com.imron_humaedi.Qalma",
-			"permissions": [
-				"android.permission.ACCESS_COARSE_LOCATION",
-				"android.permission.ACCESS_FINE_LOCATION",
-				"android.permission.RECORD_AUDIO",
-				"android.permission.MODIFY_AUDIO_SETTINGS",
-				"android.permission.ACCESS_COARSE_LOCATION",
-				"android.permission.ACCESS_FINE_LOCATION",
-				"android.permission.RECORD_AUDIO",
-				"android.permission.MODIFY_AUDIO_SETTINGS"
-			]
-		},
-		"experiments": {
-			"typedRoutes": true
-		},
-		"icon": "./assets/images/icon.png",
-		"ios": {
-			"supportsTablet": true
-		},
-		"name": "Qalma",
-		"newArchEnabled": true,
-		"orientation": "portrait",
-		"plugins": [
-			"expo-router",
-			[
-				"expo-splash-screen",
-				{
-					"backgroundColor": "#ffffff",
-					"image": "./assets/images/splash-image.png",
-					"imageWidth": 200,
-					"resizeMode": "contain"
-				}
-			],
-			[
-				"expo-location",
-				{
-					"locationAlwaysAndWhenInUsePermission": "Allow Qalma to use your location."
-				}
-			],
-			"expo-sqlite",
-			"expo-audio",
-			"expo-localization"
-		],
-		"scheme": "alquranv2",
-		"slug": "Qalma",
-		"userInterfaceStyle": "light",
-		"version": "1.0.0",
-		"web": {
-			"bundler": "metro",
-			"favicon": "./assets/images/favicon.png",
-			"output": "static"
-		}
-	}
+  "expo": {
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E5E7EB",
+        "foregroundImage": "./assets/images/icon-12.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.imron_humaedi.Qalma",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "supportsTablet": true
+    },
+    "name": "Qalma",
+    "newArchEnabled": true,
+    "orientation": "portrait",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/images/splash-image.png",
+          "imageWidth": 200,
+          "resizeMode": "contain"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Qalma to use your location."
+        }
+      ],
+      "expo-sqlite",
+      "expo-audio",
+      "expo-localization",
+      "expo-web-browser"
+    ],
+    "scheme": "alquranv2",
+    "slug": "Qalma",
+    "userInterfaceStyle": "light",
+    "version": "1.0.0",
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png",
+      "output": "static"
+    }
+  }
 }

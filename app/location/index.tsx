@@ -1,3 +1,4 @@
+import { useLocationStorage } from '@/context/storageLocation';
 import { useAllLocations } from '@/services/api/get-location.query';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
@@ -21,10 +22,12 @@ export const lokasiData: TypeLocation[] = [];
 
 export default function LocationScreen() {
 	const navigation = useNavigation();
+	const { setLocation, history, location } = useLocationStorage();
 	const [search, setSearch] = useState('');
 	const [selectedLocation, setSelectedLocation] = useState<TypeLocation | null>(
 		null,
 	);
+	const currentLoc = JSON.parse(location || '{}');
 
 	const { data, isLoading } = useAllLocations();
 	const dataLocation = data?.data || [];
@@ -45,9 +48,12 @@ export default function LocationScreen() {
 		});
 	}, [navigation]);
 
-	const handleSelect = (item: TypeLocation) => {
-		setSelectedLocation(item);
-		setSearch(item.lokasi);
+	const handleSelect = async (item: TypeLocation) => {
+		const locationSaveData = {
+			id: item.id,
+			lokasi: item.lokasi,
+		};
+		await setLocation(JSON.stringify(locationSaveData));
 	};
 
 	const renderItem = useCallback(
@@ -74,14 +80,14 @@ export default function LocationScreen() {
 		[],
 	);
 
-	const handleDialogSetLocation = () => {
+	const handleDialogSetLocation = (item: TypeLocation) => {
 		Alert.alert('Peringatan', 'Setel lokasi ini sebagai lokasi adzan?', [
 			{
 				text: 'Batal',
 				onPress: () => console.log('Cancel Pressed'),
 				style: 'cancel',
 			},
-			{ text: 'Setel Lokasi', onPress: () => console.log('OK Pressed') },
+			{ text: 'Setel Lokasi', onPress: () => handleSelect(item) },
 		]);
 	};
 
@@ -101,7 +107,7 @@ export default function LocationScreen() {
 						filterData.map((val) => (
 							<TouchableOpacity
 								key={val.id}
-								onPress={() => handleDialogSetLocation()}
+								onPress={() => handleDialogSetLocation(val)}
 								style={[
 									styles.itemBox,
 									selectedLocation?.id === val.id && styles.itemSelected,
@@ -132,6 +138,12 @@ export default function LocationScreen() {
 				<Text style={styles.historyTitle}>Lokasi Disetel</Text>
 			</View>
 
+			<View style={[styles.itemBox]}>
+				<Text style={styles.itemText}>
+					{currentLoc.id} - {currentLoc.lokasi}
+				</Text>
+			</View>
+
 			<View>
 				<View style={[styles.rowContainer, styles.historyHeader]}>
 					<Ionicons
@@ -143,8 +155,8 @@ export default function LocationScreen() {
 				</View>
 
 				<FlatList
-					keyExtractor={(item) => item.id}
-					data={lokasiData}
+					keyExtractor={(item) => String(item.id)}
+					data={history.map((item) => JSON.parse(item)) as TypeLocation[]}
 					renderItem={renderItem}
 					scrollEventThrottle={16}
 					contentContainerStyle={styles.listContent}
